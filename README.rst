@@ -3,7 +3,7 @@ Feiertage
 
 This python package provides an easy access to the list of German national holidays for each federal state.
 
-::
+.. code-block:: python
 
   >>> import feiertage
   >>> holidays = feiertage.Holidays("BW", year=2023).holidays
