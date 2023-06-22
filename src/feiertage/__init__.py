@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
-# -*- encoding: utf8 -*-
+
+__docformat__ = "numpy"
+
+"""Calculate the holidays for a specified federal state of Germany within a given year
+
+During the initialisation of a `Holiday` object all the holidays for the given state within the given year will be calculated. These will be assigned by the following table: https://de.wikipedia.org/wiki/Gesetzliche_Feiertage_in_Deutschland#%C3%9Cbersicht_aller_gesetzlichen_Feiertage
+"""
 
 import sys
 from datetime import date, timedelta
@@ -26,24 +32,48 @@ states = {
 }
 
 class Holidays:
+    """
+    Parameters
+    ---------
+    state : str
+        The state code for the federal state for which the holidays should be calculated. This parameter can either be the name of the state or a short state code, p.Ex. 'Baden-Württemberg' and 'BW' would both be a valid option. Furthermore the option 'Deutschland' / 'DE' gives a list of only the holidays which all the federal states commonly share. The list of all the valid state codes is stored in the dictionary `feiertage.states`:
+
+            - 'Deutschland' / 'DE',
+            - 'Baden-Württemberg' / 'BW',
+            - 'Bayern' / 'BY',
+            - 'Berlin' / 'BE',
+            - 'Brandenburg' / 'BB',
+            - 'Bremen' / 'HB',
+            - 'Hamburg' / 'HH',
+            - 'Hessen' / 'HE',
+            - 'Mecklenburg-Vorpommern' / 'MV',
+            - 'Niedersachsen' / 'NI',
+            - 'Nordrhein-Westfalen' / 'NW',
+            - 'Rheinland-Pfalz' / 'RP',
+            - 'Saarland' / 'SL',
+            - 'Sachsen' / 'SN',
+            - 'Sachsen-Anhalt' / 'ST',
+            - 'Schleswig-Holstein' / 'SH',
+            - 'Thüringen' / 'TH',
+
+    year : int, optional
+        the year for which the holidays should be calculated
+    regional : boolean, default=False
+        Optionally enable some regional holidays which are only valid in some communities. These would be the following ones:
+
+            - Fronleichnam in SL and TH
+            - Augsburger Hohes Friedensfest in BY
+            - Matiä Himmelfahrt in BY
+
+    school_free : boolean, default=False
+        Optionally enable some days which are not holidays but there is no school. These would be the following ones:
+
+            - Gründonnerstag in BW
+            - Reformationstag in BW
+            - Buß- und Bettag in BY
+    """
 
     def __init__(self, state : str, year : int = date.today().year, regional : bool = False, school_free : bool = False):
-        """
-        Create an object of the class 'Hoiday'
-        During the initialisation a list of all holidays will be calculated. The holidays will only be calculated ones and then stored internally inside a dictionary.
-        Teh national holidays will be assigned to the federal states by the following table: https://de.wikipedia.org/wiki/Gesetzliche_Feiertage_in_Deutschland#%C3%9Cbersicht_aller_gesetzlichen_Feiertage
-
-        Parameters
-        ----------
-        state : str
-            the state code of every federal state of germany. These can be seen in the dictionary states. When 'Deutschland' or 'DE' is selected only national wide holidays will be generated
-        year : int
-            the year for which the holidays should be calculated, default will be the current year. If the year is before 1970 it will be reset to 1970
-        regional : bool
-            also include regional holidays in the list
-        school_free : bool
-            also include school free days which are not national wide holidays
-        """
         # parse the year so it can be stored internally as self.year as an integer
         try:
             self.year = int(year)
@@ -155,4 +185,11 @@ class Holidays:
             self.holidays.append({'date':day, 'name':'Buß und Bettag'})
 
     def get_holidays_list(self) -> list :
+        """Get a list of only the dates for all holidays stored in a datetime.date object
+
+        Returns
+        -------
+            holidays : list of datetime.date objects
+                Each entry in this list is a `date` object which points to a holiday
+        """
         return [ i['date'] for i in self.holidays]

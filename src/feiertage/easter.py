@@ -1,23 +1,31 @@
 #!/usr/bin/env python3
 # -*- encoding: utf8 -*-
 
+__docformat__ = "numpy"
+
 from datetime import date
-from math import floor
 
 def calc_easter(year : int) -> date :
-    """
-    Calculating the date of Easter by Karl Friedrich Gauss
-    Detailed description can be read on the following website: https://de.wikipedia.org/wiki/Gau%C3%9Fsche_Osterformel
+    """Calculates the date of easter.
 
-    Parameters
-    ----------
-    year : int
-        the year in which the date of Easter should be calculated
+    The calculation of the Easter Sunday by following the formula by Karl Friedrich Gauss.
+    A Detailed description can be read on the following website: https://de.wikipedia.org/wiki/Gau%C3%9Fsche_Osterformel
 
-    Returns
-    -------
-    easter_day : date
-        A datetime object which is set to the date of easter
+    Args:
+    -----
+        year : int
+            The year for which the date of Easter should be calculated
+
+    Returns:
+    --------
+        easter_day : date
+            A datetime object which is set to the date of easter
+
+    Examples:
+    ---------
+        >>> from feiertage import easter
+        >>> easter.calc_easter(2023)    # example year: 2023
+        datetime.date(2023,4,9)
     """
 
     K = year // 100                                 # Säkular-zahl
