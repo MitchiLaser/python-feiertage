@@ -36,4 +36,4 @@ This package can be easily installed with pip:
 
   $ pip install feiertage-de
 
-Further information can be seen at the `PyPi project page <https://pypi.org/project/feiertage-de/>`_ or at `feiertage-de.readthedocs.io <https://feiertage-de.readthedocs.io/en/latest/index.html>`_
+Further information can be seen at the `PyPi project page <https://pypi.org/project/feiertage-de/>`_ or at `Read the Docs<https://feiertage-de.readthedocs.io/en/latest/index.html>`_
