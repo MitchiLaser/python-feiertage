@@ -18,9 +18,9 @@ clean:
 upload: build
 	twine upload dist/*
 
-venv:	build docs
+devenv:	
 	python -m venv venv/
-	. venv/bin/activate; pip install dist/feiertage*.tar.gz
+	. venv/bin/activate; pip install -e .
 	. venv/bin/activate; pip install ptpython
 
 docs:	build
