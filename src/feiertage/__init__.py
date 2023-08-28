@@ -81,7 +81,7 @@ class Holidays:
                 self.year = 1970
                 print(sys.stderr, "Year was reset to 1970") # TODO: throw exception instead
         except ValueError:
-            print(sys.stderr, "Fehler bei Parsen von %s als Datums-Angabe"%year)
+            print(sys.stderr, f"Fehler bei Parsen von {year} als Datums-Angabe")
 
         # parse the state name by its key code so it will be stored in self.state
         try:
@@ -92,11 +92,11 @@ class Holidays:
             else:
                 raise ValueError
         except ValueError:
-            print(sys.stderr, "Fehler beim Parsen von %s als Landes-Angabe"%state)
+            print(sys.stderr, f"Fehler beim Parsen von {state} als Landes-Angabe")
 
         self._regional = regional
         self._school_free = school_free
-        
+
         self.holidays = []
         self._generate_common_holidays()
 
