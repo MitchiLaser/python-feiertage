@@ -5,7 +5,8 @@ __docformat__ = "numpy"
 
 from datetime import date
 
-def calc_easter(year : int) -> date :
+
+def calc_easter(year: int) -> date:
     """Calculates the date of easter.
 
     The calculation of the Easter Sunday by following the formula by Karl Friedrich Gauss.
@@ -44,4 +45,3 @@ def calc_easter(year : int) -> date :
     else:
         easter_day = date(year, 3, OS)
     return easter_day
-
