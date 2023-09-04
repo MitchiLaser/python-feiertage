@@ -64,7 +64,7 @@ class Holidays:
 
             - Fronleichnam in SL and TH
             - Augsburger Hohes Friedensfest in BY
-            - Matiä Himmelfahrt in BY
+            - Mariä Himmelfahrt in BY
 
     school_free : boolean, default=False
         Optionally enable some days which are not holidays but there is no school. These would be the following ones:
