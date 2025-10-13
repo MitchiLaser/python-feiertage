@@ -35,7 +35,9 @@ else:
 extensions = ['sphinx.ext.napoleon',    # enable numpy docstrings
               'sphinx.ext.autodoc',
               'sphinx.ext.autosummary',
-              'sphinx.ext.autosectionlabel']
+              'sphinx.ext.autosectionlabel',
+              'sphinx_rtd_theme',
+             ]
 
 templates_path = ['_templates']
 exclude_patterns = []
