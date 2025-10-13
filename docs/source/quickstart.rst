@@ -32,7 +32,7 @@ Furthermore there are  optional parameters:
 
 * `year`: this parameter specifies the year in which all the holidays should be calculated. The default is the current year from the system clock
 * `school_free`: if this parameter is manually set to `True` then also days which are no holidays but there is no school will also be generated
-* `regional`: if this parameter is manually set to `True` then the days which are n holidays in the whole state but only in some communities will also be generated
+* `regional`: if this parameter is manually set to `True` then the days which aren't holidays in the whole state but only in some communities will also be generated
 
 With this knowledge there is no more to say.
 
