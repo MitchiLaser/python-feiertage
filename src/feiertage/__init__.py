@@ -109,15 +109,15 @@ class Holidays:
         # add the common holidays for all states which have fixed dates
         self.holidays.append({'date': date(self.year, 1, 1), 'name': 'Neujahr'})
         self.holidays.append({'date': date(self.year, 5, 1), 'name': 'Tag der Arbeit'})
-        self.holidays.append({'date': date(self.year, 10, 3), 'name': 'Tag der deutschen Einheit'})
-        self.holidays.append({'date': date(self.year, 12, 25), 'name': '1. Weihnachstag'})
-        self.holidays.append({'date': date(self.year, 12, 26), 'name': '2. Weihnachstag'})
+        self.holidays.append({'date': date(self.year, 10, 3), 'name': 'Tag der Deutschen Einheit'})
+        self.holidays.append({'date': date(self.year, 12, 25), 'name': '1. Weihnachtstag'})
+        self.holidays.append({'date': date(self.year, 12, 26), 'name': '2. Weihnachtstag'})
 
         # now add all the holidays which are on another day every year. They are all depending on easter
         self.easter = easter.calc_easter(self.year)
         self.holidays.append({'date': (self.easter - timedelta(days=2)), 'name': 'Karfreitag'})
         self.holidays.append({'date': (self.easter + timedelta(days=1)), 'name': 'Ostermontag'})
-        self.holidays.append({'date': (self.easter + timedelta(days=39)), 'name': 'Christi-Himmelfahrt'})
+        self.holidays.append({'date': (self.easter + timedelta(days=39)), 'name': 'Christi Himmelfahrt'})
         self.holidays.append({'date': (self.easter + timedelta(days=50)), 'name': 'Pfingstmontag'})
 
     def _generate_regional_holidays(self) -> None:
@@ -136,7 +136,7 @@ class Holidays:
 
     def _add_heilige_drei_koenige(self) -> None:
         if self.state in ["BW", "BY", "ST"]:
-            self.holidays.append({'date': date(self.year, 1, 6), 'name': 'Heilige drei Könige'})
+            self.holidays.append({'date': date(self.year, 1, 6), 'name': 'Heilige Drei Könige'})
 
     def _add_frauentag(self) -> None:
         if self.state in ["BE", "MV"]:
@@ -183,7 +183,7 @@ class Holidays:
             day = date(self.year, 11, 22)
             while day.weekday() != 2:
                 day = day - timedelta(days=1)
-            self.holidays.append({'date': day, 'name': 'Buß und Bettag'})
+            self.holidays.append({'date': day, 'name': 'Buß- und Bettag'})
 
     def get_holidays_list(self) -> list:
         """Get a list of only the dates for all holidays stored in a datetime.date object
