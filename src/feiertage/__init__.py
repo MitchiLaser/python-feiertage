@@ -62,7 +62,7 @@ class Holidays:
     regional : boolean, default=False
         Optionally enable some regional holidays which are only valid in some communities. These would be the following ones:
 
-            - Fronleichnam in SL and TH
+            - Fronleichnam in SN and TH
             - Augsburger Hohes Friedensfest in BY
             - Mariä Himmelfahrt in BY
 
@@ -101,7 +101,7 @@ class Holidays:
         self.holidays = []
         self._generate_common_holidays()
 
-        # in more then only the national wide should be included than add each of them individually
+        # if more than only the national holidays should be included add each of them individually
         if self.state != 'DE':
             self._generate_regional_holidays()
 
@@ -109,15 +109,21 @@ class Holidays:
         # add the common holidays for all states which have fixed dates
         self.holidays.append({'date': date(self.year, 1, 1), 'name': 'Neujahr'})
         self.holidays.append({'date': date(self.year, 5, 1), 'name': 'Tag der Arbeit'})
-        self.holidays.append({'date': date(self.year, 10, 3), 'name': 'Tag der deutschen Einheit'})
-        self.holidays.append({'date': date(self.year, 12, 25), 'name': '1. Weihnachstag'})
-        self.holidays.append({'date': date(self.year, 12, 26), 'name': '2. Weihnachstag'})
+        self.holidays.append({'date': date(self.year, 10, 3), 'name': 'Tag der Deutschen Einheit'})
+        if self.year == 2017:
+            # common holiday for all states in 2017 (500th Reformation anniversary)
+            self.holidays.append({'date': date(self.year, 10, 31), 'name': 'Reformationstag'})
+        self.holidays.append({'date': date(self.year, 12, 25), 'name': '1. Weihnachtstag'})
+        self.holidays.append({'date': date(self.year, 12, 26), 'name': '2. Weihnachtstag'})
+        if self.year <= 1994:
+            # common holiday abolished in 1995
+            self._add_buss_und_bettag()
 
         # now add all the holidays which are on another day every year. They are all depending on easter
         self.easter = easter.calc_easter(self.year)
         self.holidays.append({'date': (self.easter - timedelta(days=2)), 'name': 'Karfreitag'})
         self.holidays.append({'date': (self.easter + timedelta(days=1)), 'name': 'Ostermontag'})
-        self.holidays.append({'date': (self.easter + timedelta(days=39)), 'name': 'Christi-Himmelfahrt'})
+        self.holidays.append({'date': (self.easter + timedelta(days=39)), 'name': 'Christi Himmelfahrt'})
         self.holidays.append({'date': (self.easter + timedelta(days=50)), 'name': 'Pfingstmontag'})
 
     def _generate_regional_holidays(self) -> None:
@@ -127,19 +133,24 @@ class Holidays:
         self._add_easter_sunday()
         self._add_pfingsten()
         self._add_frohnleichnam()
+        self._add_befreiung()
         self._add_augsburg()
         self._add_mariae_himmelfahrt()
         self._add_kindertag()
         self._add_reformation()
         self._add_allerheiligen()
-        self._add_buss_und_bettag()
+        if (
+            self.year > 1994
+            and (self.state in ["SN"] or (self.state in ["BY"] and self._school_free))
+        ):
+            self._add_buss_und_bettag()
 
     def _add_heilige_drei_koenige(self) -> None:
         if self.state in ["BW", "BY", "ST"]:
-            self.holidays.append({'date': date(self.year, 1, 6), 'name': 'Heilige drei Könige'})
+            self.holidays.append({'date': date(self.year, 1, 6), 'name': 'Heilige Drei Könige'})
 
     def _add_frauentag(self) -> None:
-        if self.state in ["BE", "MV"]:
+        if (self.year >= 2019 and self.state in ["BE"]) or (self.year >= 2023 and self.state in ["MV"]):
             self.holidays.append({'date': date(self.year, 3, 8), 'name': 'Frauentag'})
 
     def _add_gruendonnerstag(self) -> None:
@@ -158,6 +169,10 @@ class Holidays:
         if (self.state in ["BW", "BY", "HE", "NW", "RP", "SL"]) or (self.state in ["SN", "TH"] and self._regional):
             self.holidays.append({'date': (self.easter + timedelta(days=60)), 'name': 'Fronleichnam'})
 
+    def _add_befreiung(self) -> None:
+        if self.year in [2020, 2025] and self.state in ["BE"]:
+            self.holidays.append({'date': date(self.year, 5, 8), 'name': 'Tag der Befreiung'})
+
     def _add_augsburg(self) -> None:
         if self.state in ["BY"] and self._regional:
             self.holidays.append({'date': date(self.year, 8, 8), 'name': 'Augsburger Hohes Friedensfest'})
@@ -167,11 +182,19 @@ class Holidays:
             self.holidays.append({'date': date(self.year, 8, 15), 'name': 'Mariä Himmelfahrt'})
 
     def _add_kindertag(self) -> None:
-        if self.state in ["TH"]:
+        if self.year >= 2019 and self.state in ["TH"]:
             self.holidays.append({'date': date(self.year, 9, 20), 'name': 'Weltkindertag'})
 
     def _add_reformation(self) -> None:
-        if (self.state in ["BB", "HB", "HH", "MV", "NI", "SN", "ST", "SH", "TH"]) or (self.state in ["BW"] and self._school_free):
+        if (
+            self.year != 2017  # added in _generate_common_holidays for 2017
+            and (
+                self.state in ["BB", "MV", "SN", "ST", "TH"]
+                or (self.state in ["BW"] and self._school_free)
+                # holiday introduced in some states after the 2017 anniversary
+                or (self.year > 2017 and self.state in ["HB", "HH", "NI", "SH"])
+            )
+        ):
             self.holidays.append({'date': date(self.year, 10, 31), 'name': 'Reformationstag'})
 
     def _add_allerheiligen(self) -> None:
@@ -179,11 +202,14 @@ class Holidays:
             self.holidays.append({'date': date(self.year, 11, 1), 'name': 'Allerheiligen'})
 
     def _add_buss_und_bettag(self) -> None:
-        if (self.state in ["SN"]) or (self.state in ["BY"] and self._school_free):
-            day = date(self.year, 11, 22)
-            while day.weekday() != 2:
-                day = day - timedelta(days=1)
-            self.holidays.append({'date': day, 'name': 'Buß und Bettag'})
+        """Calculates Buß- und Bettag date.
+        Whether to include as a national or state holiday (until/after 1994)
+        is checked in _generate_common_holidays() and _generate_regional_holidays().
+        """
+        day = date(self.year, 11, 22)
+        while day.weekday() != 2:
+            day = day - timedelta(days=1)
+        self.holidays.append({'date': day, 'name': 'Buß- und Bettag'})
 
     def get_holidays_list(self) -> list:
         """Get a list of only the dates for all holidays stored in a datetime.date object
